@@ -21,11 +21,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         CheckForGround();
-
         MovePlayer();
-
         Jump();
-
         AddGravity();
     }
 
