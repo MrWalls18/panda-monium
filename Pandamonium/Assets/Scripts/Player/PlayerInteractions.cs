@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class PlayerInteractions : MonoBehaviour
 {
-    [SerializeField] private int throwablesLeft = 10;
-
-    [SerializeField] private float forwardThrowForce = 10f;
-    [SerializeField] private float upwardThrowForce = 2f;
+    private Player playerStats;
 
     [SerializeField] private Transform camera;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private GameObject objectToThrow;
+
+    private void Awake() 
+    {
+        playerStats = GetComponent<Player>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -23,11 +25,8 @@ public class PlayerInteractions : MonoBehaviour
 
     void Throw()
     {
-        if(Input.GetButtonDown("Fire1") && throwablesLeft > 0)
+        if(Input.GetButtonDown("Fire1") && playerStats.ThrowablesLeft > 0)
         {
-            //Quaternion q = Quaternion.FromToRotation(Vector3.up, transform.forward);
-            //objectToThrow.transform.rotation = q * attackPoint.transform.rotation;
-
             //Spawn projectile and grab Rigidbody
             GameObject projectile = Instantiate(objectToThrow, attackPoint.position, camera.rotation);            
             Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
@@ -42,10 +41,10 @@ public class PlayerInteractions : MonoBehaviour
             }
 
             //Calculate force of throw and apply to projectile
-            Vector3 force = forceDirection * forwardThrowForce + transform.up * upwardThrowForce * Time.deltaTime;
+            Vector3 force = forceDirection * playerStats.ForwardThrowForce + transform.up * playerStats.UpwardThrowForce * Time.deltaTime;
             projectileRb.AddForce(force, ForceMode.Impulse);
 
-            throwablesLeft--;
+            playerStats.ThrowablesLeft--;
         }
     }
 

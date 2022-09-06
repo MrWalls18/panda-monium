@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : Player
+public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private CharacterController controller;
+    [SerializeField] private CharacterController controller;        
+    private Player playerStats;
 
     [Header("Physics of Player")]
     [SerializeField] private float gravity = -9.81f;
@@ -13,13 +14,16 @@ public class PlayerMovement : Player
     [SerializeField] private LayerMask groundMask;
     private Vector3 velocity;
 
-    
+    private void Awake() {
+        
+        playerStats = GetComponent<Player>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Double Jump: " + HasDoubleJump);
-        Debug.Log("Is Grounded: " + IsPlayerGrounded);
+        Debug.Log("Double Jump: " + playerStats.HasDoubleJump);
+        Debug.Log("Is Grounded: " + playerStats.IsPlayerGrounded);
         CheckForGround();
         MovePlayer();
         Jump();
@@ -29,10 +33,10 @@ public class PlayerMovement : Player
     void CheckForGround()
     {
         //Cast physics sphere towards bottom of play to check for ground
-        IsPlayerGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        playerStats.IsPlayerGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         //Resets falling velocity if player is grounded
-        if(IsPlayerGrounded && velocity.y < 0)
+        if(playerStats.IsPlayerGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
@@ -44,20 +48,20 @@ public class PlayerMovement : Player
         float z = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;        
-        controller.Move(move * Speed * Time.deltaTime);
+        controller.Move(move * playerStats.Speed * Time.deltaTime);
     }
 
     void Jump()
     {
         //Checks if player can jump
-        if(Input.GetButtonDown("Jump") && (IsPlayerGrounded || HasDoubleJump))
+        if(Input.GetButtonDown("Jump") && (playerStats.IsPlayerGrounded || playerStats.HasDoubleJump))
         {
-            velocity.y = Mathf.Sqrt(JumpHeight * -2 * gravity);
+            velocity.y = Mathf.Sqrt(playerStats.JumpHeight * -2 * gravity);
 
             //Resets double jump
-            if (!IsPlayerGrounded)
+            if (!playerStats.IsPlayerGrounded)
             {
-                HasDoubleJump = false;
+                playerStats.HasDoubleJump = false;
             }
 
         }

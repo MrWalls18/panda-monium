@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    int _health = 100;
+    [SerializeField]
+    private int _health = 100;
     public int Health
     {
         get {
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField]
     private float _speed = 12f;
     public float Speed
     {
@@ -26,6 +28,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField]
     private float _jumpHeight = 3f;
     public float JumpHeight
     {
@@ -34,6 +37,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField]
     private bool _hasDoubleJump = true;
     public bool HasDoubleJump
     {
@@ -45,6 +49,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField]
     private bool _isPlayerGrounded = false;
     public bool IsPlayerGrounded
     {
@@ -56,6 +61,33 @@ public class Player : MonoBehaviour
         }
     }
 
-    float forwardThrowForce, upwardThrowForce;
+    [SerializeField]
+    private float _forwardThrowForce;
+    public float ForwardThrowForce
+    {
+        get {
+            return _forwardThrowForce;
+        }
+    }
 
+    [SerializeField]
+    private float _upwardThrowForce;
+    public float UpwardThrowForce
+    {
+        get {
+            return _upwardThrowForce;
+        }
+    }
+
+    [SerializeField]
+    private int _throwablesLeft;
+    public int ThrowablesLeft
+    {
+        get {
+            return _throwablesLeft;
+        }
+        set {
+            _throwablesLeft = value;
+        }
+    }
 }
