@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Player : MonoBehaviour
 {
+    private GameManager _gameManager;
+
+    private void Awake()
+    {
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
     [SerializeField]
-    private int _health = 100;
+    private int _health;
     public int Health
     {
         get {
@@ -13,6 +21,11 @@ public class Player : MonoBehaviour
         }
         set {
             _health = value;
+            if (_health <= 0)
+            {
+                _gameManager.RespawnPlayer();
+                PhotonNetwork.Destroy(this.gameObject);
+            }
         }
     }
 
@@ -79,6 +92,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField] private int _maxThrowables;
+
     [SerializeField]
     private int _throwablesLeft;
     public int ThrowablesLeft
@@ -88,6 +103,22 @@ public class Player : MonoBehaviour
         }
         set {
             _throwablesLeft = value;
+            if (_throwablesLeft > _maxThrowables)
+            {
+                _throwablesLeft = _maxThrowables;
+            }
+        }
+    }
+
+    [SerializeField]
+    private bool _hasSpeedBoost;
+    public bool HasSpeedBoost
+    {
+        get {
+            return _hasSpeedBoost;
+        }
+        set {
+            _hasSpeedBoost = value;
         }
     }
 }

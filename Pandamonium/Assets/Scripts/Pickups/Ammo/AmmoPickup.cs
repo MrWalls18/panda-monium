@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoubleJump : MonoBehaviour
+public class AmmoPickup : MonoBehaviour
 {
+    [SerializeField] private int ammoAmount;
     [SerializeField] private int duration;
 
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<Player>().HasDoubleJump = true;
+            other.gameObject.GetComponent<Player>().ThrowablesLeft += ammoAmount;
 
             StartCoroutine(SpawnJumpPickup());
         }

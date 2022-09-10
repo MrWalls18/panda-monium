@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,20 +15,25 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     private Vector3 velocity;
 
+    private PhotonView view;
+
     private void Awake() {
         
         playerStats = GetComponent<Player>();
+        view = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Double Jump: " + playerStats.HasDoubleJump);
-        Debug.Log("Is Grounded: " + playerStats.IsPlayerGrounded);
-        CheckForGround();
-        MovePlayer();
-        Jump();
-        AddGravity();
+        if (view.IsMine)
+        {
+            CheckForGround();
+            MovePlayer();
+            Jump();
+            AddGravity();
+        }
+        
     }
 
     void CheckForGround()
