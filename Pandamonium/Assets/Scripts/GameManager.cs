@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class GameManager : MonoBehaviour
+public class GameManager : SingletonPattern<GameManager>
 {
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private GameObject player;
 
-    private void Awake()
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    private void Start()
     {
         RespawnPlayer();
     }

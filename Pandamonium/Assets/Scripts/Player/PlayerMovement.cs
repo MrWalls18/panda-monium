@@ -6,7 +6,7 @@ using Photon.Pun;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController controller;        
-    private Player playerStats;
+    private PlayerStats playerStats;
 
     [Header("Physics of Player")]
     [SerializeField] private float gravity = -9.81f;
@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake() {
         
-        playerStats = GetComponent<Player>();
+        playerStats = GetComponent<PlayerStats>();
         view = GetComponent<PhotonView>();
     }
 

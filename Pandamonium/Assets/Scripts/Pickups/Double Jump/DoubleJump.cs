@@ -10,7 +10,7 @@ public class DoubleJump : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<Player>().HasDoubleJump = true;
+            other.gameObject.GetComponent<PlayerStats>().HasDoubleJump = true;
 
             StartCoroutine(SpawnJumpPickup());
         }

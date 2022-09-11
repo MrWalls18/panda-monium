@@ -11,7 +11,7 @@ public class AmmoPickup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<Player>().ThrowablesLeft += ammoAmount;
+            other.gameObject.GetComponent<PlayerStats>().ThrowablesLeft += ammoAmount;
 
             StartCoroutine(SpawnJumpPickup());
         }

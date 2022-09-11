@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class PlayerInteractions : MonoBehaviour
 {
-    private Player playerStats;
+    private PlayerStats playerStats;
 
     [SerializeField] private Transform camera;
     [SerializeField] private Transform attackPoint;
@@ -13,7 +13,7 @@ public class PlayerInteractions : MonoBehaviour
 
     private void Awake() 
     {
-        playerStats = GetComponent<Player>();
+        playerStats = GetComponent<PlayerStats>();
     }
 
     // Update is called once per frame

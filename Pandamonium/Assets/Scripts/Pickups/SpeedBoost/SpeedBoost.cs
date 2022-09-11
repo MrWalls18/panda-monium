@@ -11,7 +11,7 @@ public class SpeedBoost : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            if (!other.gameObject.GetComponent<Player>().HasSpeedBoost)
+            if (!other.gameObject.GetComponent<PlayerStats>().HasSpeedBoost)
             {
                 StartCoroutine(Boost(other));
             }
@@ -20,16 +20,16 @@ public class SpeedBoost : MonoBehaviour
 
     IEnumerator Boost(Collider player)
     {        
-        player.gameObject.GetComponent<Player>().Speed *= speedMultiplier;
-        player.gameObject.GetComponent<Player>().HasSpeedBoost = true;
+        player.gameObject.GetComponent<PlayerStats>().Speed *= speedMultiplier;
+        player.gameObject.GetComponent<PlayerStats>().HasSpeedBoost = true;
 
         this.gameObject.GetComponent<MeshRenderer>().enabled = false;
         this.gameObject.GetComponent<Collider>().enabled = false;
 
         yield return new WaitForSeconds(duration);
 
-        player.gameObject.GetComponent<Player>().Speed /= speedMultiplier;
-        player.gameObject.GetComponent<Player>().HasSpeedBoost = false;
+        player.gameObject.GetComponent<PlayerStats>().Speed /= speedMultiplier;
+        player.gameObject.GetComponent<PlayerStats>().HasSpeedBoost = false;
 
         this.gameObject.GetComponent<MeshRenderer>().enabled = true;
         this.gameObject.GetComponent<Collider>().enabled = true;

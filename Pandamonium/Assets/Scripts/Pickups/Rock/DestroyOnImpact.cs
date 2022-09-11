@@ -12,7 +12,7 @@ public class DestroyOnImpact : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             //Damage Health
-            other.gameObject.GetComponent<Player>().Health -= damage;
+            other.gameObject.GetComponent<PlayerStats>().Health -= damage;
         }
         
         PhotonNetwork.Destroy(this.gameObject);
