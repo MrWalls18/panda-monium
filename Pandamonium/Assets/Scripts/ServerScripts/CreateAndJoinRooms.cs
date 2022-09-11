@@ -14,6 +14,25 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject playerListItemPrefab;
     [SerializeField] private Transform playerListContent;
 
+    [SerializeField] private GameObject startGameButton;
+
+    private void Start()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinLobby();
+        PhotonNetwork.AutomaticallySyncScene = true;
+    }
+
+    public override void OnJoinedLobby()
+    {
+        PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        ChangeScreens("Create/Join Room");
+    }
+
     public void CreateRoom()
     {
        // if (string.IsNullOrEmpty(createInput.text))
@@ -24,14 +43,18 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         ChangeScreens("Loading Screen");
     }
 
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        ChangeScreens("Error Menu");
+    }
+
+    #region Join Room Functions
     public void JoinRoom()
     {
        // if (string.IsNullOrEmpty(joinInput.text))
          //   return;
 
-        PhotonNetwork.JoinRoom(joinInput.text);
-
-        
+        PhotonNetwork.JoinRoom(joinInput.text);        
     }
 
     public override void OnJoinedRoom()
@@ -41,22 +64,33 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         Player[] players = PhotonNetwork.PlayerList;
 
+        foreach(Transform child in playerListContent)
+        {
+            Destroy(child.gameObject);
+        }
+
         for(int i = 0; i < players.Length; i++)
         {
             Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
         }
-    }
 
-    
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+    }  
 
-    public override void OnCreateRoomFailed(short returnCode, string message)
+    public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        ChangeScreens("Error Menu");
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         ChangeScreens("Error Menu");
+    }
+#endregion
+
+    public void StartGame()
+    {
+        PhotonNetwork.LoadLevel("LevelDesign");
     }
 
     public void LeaveRoom()
@@ -72,7 +106,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-      //  Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
+        Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
     }
 
     public void ChangeScreens(string menu)
