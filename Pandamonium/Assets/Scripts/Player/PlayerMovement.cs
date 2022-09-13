@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviourPunCallbacks, IDamageable
 {
     [SerializeField] private CharacterController controller;        
     private PlayerStats playerStats;
@@ -16,14 +16,23 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
 
     private PhotonView view;
+    private PlayerManager playerManager;
 
-    private void Awake() {
-        
+    private void Awake()
+    {
         playerStats = GetComponent<PlayerStats>();
         view = GetComponent<PhotonView>();
+        playerManager = PhotonView.Find((int)view.InstantiationData[0]).GetComponent<PlayerManager>(); //Finds player manager in scene
     }
 
-    // Update is called once per frame
+    private void Start() 
+    {
+        if (!view.IsMine)
+        {
+            GetComponentInChildren<Camera>().gameObject.SetActive(false);
+        }
+    }
+
     void Update()
     {
         if (view.IsMine)
@@ -32,8 +41,7 @@ public class PlayerMovement : MonoBehaviour
             MovePlayer();
             Jump();
             AddGravity();
-        }
-        
+        }        
     }
 
     void CheckForGround()
@@ -53,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * x + transform.forward * z;        
+        Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * playerStats.Speed * Time.deltaTime);
     }
 
@@ -62,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         //Checks if player can jump
         if(Input.GetButtonDown("Jump") && (playerStats.IsPlayerGrounded || playerStats.HasDoubleJump))
         {
+            //Physics of a jump
             velocity.y = Mathf.Sqrt(playerStats.JumpHeight * -2 * gravity);
 
             //Resets double jump
@@ -69,7 +78,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 playerStats.HasDoubleJump = false;
             }
-
         }
     }
 
@@ -78,4 +86,31 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
+
+    //PhotonRPC functions to allow damage amongst all players
+    public void TakeDamage(int damage)
+    {
+        view.RPC(nameof(RPC_TakeDamage), view.Owner, damage);
+    }
+
+    [PunRPC]
+    void RPC_TakeDamage(int damage)
+    {
+        playerStats.Health -= damage;
+        if (playerStats.Health <= 0)
+        {
+            DeathScreen();
+            playerManager.Die();
+        }
+    }
+
+    void DeathScreen()
+    {
+
+    }
+
+ /*   void Die()
+    {
+        playerManager.Die();
+    }*/
 }

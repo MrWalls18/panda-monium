@@ -7,27 +7,22 @@ public class LookAround : MonoBehaviour
 {
     public float mouseSensitivity = 100f;
     public Transform playerBody;
-
     float xRotation = 0f;
 
-    PhotonView netView;
+    PhotonView view;
 
-    // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        netView = this.gameObject.transform.parent.GetComponent<PhotonView>();
+        view = GetComponent<PhotonView>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (netView.IsMine)
+        if (view.IsMine)
         {
             Look();  
         }
-        
-
     }
 
     void Look()

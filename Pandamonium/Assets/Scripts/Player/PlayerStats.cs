@@ -14,11 +14,6 @@ public class PlayerStats : MonoBehaviour
         }
         set {
             _health = value;
-            if (_health <= 0)
-            {
-                GameManager.Instance.RespawnPlayer();
-                PhotonNetwork.Destroy(this.gameObject);
-            }
         }
     }
 

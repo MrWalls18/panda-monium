@@ -11,18 +11,22 @@ public class PlayerInteractions : MonoBehaviour
     [SerializeField] private Transform attackPoint;
     [SerializeField] private GameObject objectToThrow;
 
+    PhotonView PV;
+
     private void Awake() 
     {
         playerStats = GetComponent<PlayerStats>();
+        PV = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Throw();
-    }
-
-    
+        if(PV.IsMine)
+        {
+            Throw();
+        }
+    }    
 
     void Throw()
     {
