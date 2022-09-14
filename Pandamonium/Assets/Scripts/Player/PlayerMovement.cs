@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IDamageable
         if (playerStats.Health <= 0)
         {
             DeathScreen();
-            playerManager.Die();
+            Die();
         }
     }
 
@@ -109,8 +109,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IDamageable
 
     }
 
- /*   void Die()
+    public void Die()
     {
         playerManager.Die();
-    }*/
+    }
 }

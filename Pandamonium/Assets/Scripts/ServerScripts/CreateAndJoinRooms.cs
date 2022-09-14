@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
@@ -9,19 +10,25 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
     [SerializeField] private InputField createInput;
     [SerializeField] private InputField joinInput;
+    [SerializeField] private InputField username;
+    private static string usernamePrefKey = "Username";
 
     [SerializeField] private GameObject[] menuScreens;
-    [SerializeField] private GameObject startGameButton;
     [SerializeField] private GameObject playerListItemPrefab;
+    [SerializeField] private GameObject startGameButton;    
 
     [SerializeField] private Text roomNameText;    
     [SerializeField] private Transform playerListContent;
 
+    [SerializeField] private byte maxPlayersPerRoom;
     
 
 #region Connecting to Servers
     private void Start()
     {
+        if (PlayerPrefs.HasKey(usernamePrefKey))
+            username.text = PlayerPrefs.GetString(usernamePrefKey);
+
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -31,9 +38,13 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        SceneManager.LoadScene("MainMenu");        
+    }
+
     public override void OnJoinedLobby()
     {
-        PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
         ChangeScreens("Create/Join Room");
     }
 #endregion
@@ -41,10 +52,11 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 #region Creating Rooms
     public void CreateRoom()
     {
-        if (string.IsNullOrEmpty(createInput.text))
+        //Wont create room if there is no room name or username
+        if (string.IsNullOrEmpty(createInput.text) || string.IsNullOrEmpty(username.text))
             return;
 
-        PhotonNetwork.CreateRoom(createInput.text);
+        PhotonNetwork.CreateRoom(createInput.text, new RoomOptions() { MaxPlayers = maxPlayersPerRoom});
 
         ChangeScreens("Loading Screen");
     }
@@ -58,7 +70,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 #region Joining Rooms
     public void JoinRoom()
     {
-        if (string.IsNullOrEmpty(joinInput.text))
+        //Wont join room if there is no room name or username
+        if (string.IsNullOrEmpty(joinInput.text) || string.IsNullOrEmpty(username.text))
             return;
 
         PhotonNetwork.JoinRoom(joinInput.text);        
@@ -66,6 +79,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        //Sets username and saves it
+        PhotonNetwork.NickName = username.text;
+        PlayerPrefs.SetString(usernamePrefKey, username.text);
+
         //Changes the displayed room name
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
         ChangeScreens("Room Menu");
@@ -102,10 +119,16 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     }
 #endregion
 
-#region Leaving Rooms
+#region Leaving Rooms/Lobbies
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
+        ChangeScreens("Loading Screen");
+    }
+
+    public void LeaveLobby()
+    {
+        PhotonNetwork.Disconnect();
         ChangeScreens("Loading Screen");
     }
 

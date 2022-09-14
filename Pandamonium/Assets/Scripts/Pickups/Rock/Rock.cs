@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class DestroyOnImpact : MonoBehaviour
+public class Rock : MonoBehaviour
 {
     [SerializeField] private int damage;
     PhotonView PV;
