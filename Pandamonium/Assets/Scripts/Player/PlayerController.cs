@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 #region Movements
     void CheckForGround()
     {
-        //Cast physics sphere towards bottom of play to check for ground
+        //Cast physics sphere towards bottom of player to check for ground
         playerStats.IsPlayerGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         //Resets falling velocity if player is grounded
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     }
 #endregion
 
-    //PhotonRPC functions to allow damage amongst all players
+#region Damage/Death RPC
     public void TakeDamage(int damage)
     {
         view.RPC(nameof(RPC_TakeDamage), view.Owner, damage);
@@ -101,13 +101,35 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         playerStats.Health -= damage;
         if (playerStats.Health <= 0)
         {
+            DisablePlayer();
             GetComponent<PlayerUI>().DeathScreen();
-           // Die();
         }
     }
+
+    public void DisablePlayer()
+    {
+        view.RPC(nameof(RPC_DisablePlayer), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void RPC_DisablePlayer()
+    {
+        MeshRenderer mesh = GetComponentInChildren<MeshRenderer>();
+        if (mesh != null)
+            mesh.enabled = false;
+        LookAround look = GetComponentInChildren<LookAround>();
+        if (look != null)
+            look.enabled = false;
+
+        GetComponent<CharacterController>().enabled = false;
+        GetComponent<PlayerController>().enabled = false;
+        GetComponent<PlayerInteractions>().enabled = false;        
+    }
+#endregion
 
     public void Die()
     {
         playerManager.Die();
     }
+
 }

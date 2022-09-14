@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -8,18 +9,6 @@ public class PlayerUI : MonoBehaviour
 
     public void DeathScreen()
     {
-        //Disables collider
-        GetComponent<CharacterController>().enabled = false;
-
-        // Disables renderer
-        GetComponentInChildren<MeshRenderer>().enabled = false;
-
-        //Disables player movement
-        GetComponent<PlayerController>().enabled = false; 
-        GetComponent<PlayerInteractions>().enabled = false;
-        GetComponentInChildren<LookAround>().enabled = false;
-
-        //Enables death screen
         ChangeScreens("DeathScreen");
         Cursor.lockState = CursorLockMode.None;
     }

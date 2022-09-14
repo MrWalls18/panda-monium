@@ -33,7 +33,8 @@ public class PlayerInteractions : MonoBehaviour
         if(Input.GetButtonDown("Fire1") && playerStats.ThrowablesLeft > 0)
         {
             //Spawn projectile and grab Rigidbody
-            GameObject projectile = PhotonNetwork.Instantiate(objectToThrow.name, attackPoint.position, camera.rotation);            
+            GameObject projectile = PhotonNetwork.Instantiate(objectToThrow.name, attackPoint.position, camera.rotation);
+            projectile.GetComponent<Rock>().bulletOwner = PV.Owner.NickName;
             Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
             //Calculate direction

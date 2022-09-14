@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 13
+  bulletOwner: 
 --- !u!114 &-3794613301748592506
 MonoBehaviour:
   m_ObjectHideFlags: 0

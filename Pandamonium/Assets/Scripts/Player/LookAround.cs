@@ -5,9 +5,9 @@ using Photon.Pun;
 
 public class LookAround : MonoBehaviour
 {
-    public float mouseSensitivity = 100f;
-    public Transform playerBody;
-    float xRotation = 0f;
+    [SerializeField] private float mouseSensitivity;
+    [SerializeField] private Transform playerBody;
+    private float xRotation = 0f;
 
     PhotonView view;
 

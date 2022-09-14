@@ -6,9 +6,11 @@ using Photon.Pun;
 public class Rock : MonoBehaviour
 {
     [SerializeField] private int damage;
-    PhotonView PV;
+    private PhotonView PV;
+    [HideInInspector] public string bulletOwner = "";
 
-    private void Awake() {
+    private void Awake()
+    {
         PV = GetComponent<PhotonView>();
     }
 
@@ -16,9 +18,16 @@ public class Rock : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            //Damage Health
-            other.gameObject.GetComponent<IDamageable>()?.TakeDamage(damage);
-        }
+            if (bulletOwner == other.gameObject.GetComponent<PhotonView>().Owner.NickName)
+                return;
+            else
+            {
+                Debug.Log(bulletOwner + " : " + other.gameObject.GetComponent<PhotonView>().Owner.NickName);
+                //Damage Health
+                other.gameObject.GetComponent<IDamageable>()?.TakeDamage(damage);
+            }
+            
+        }        
 
         if(PV.IsMine)
         {
