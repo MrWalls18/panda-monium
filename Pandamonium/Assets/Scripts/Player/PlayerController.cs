@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviourPunCallbacks, IDamageable
+public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
     [SerializeField] private CharacterController controller;        
     private PlayerStats playerStats;
@@ -44,6 +44,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IDamageable
         }        
     }
 
+#region Movements
     void CheckForGround()
     {
         //Cast physics sphere towards bottom of play to check for ground
@@ -86,6 +87,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IDamageable
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
+#endregion
 
     //PhotonRPC functions to allow damage amongst all players
     public void TakeDamage(int damage)
@@ -99,14 +101,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IDamageable
         playerStats.Health -= damage;
         if (playerStats.Health <= 0)
         {
-            DeathScreen();
-            Die();
+            GetComponent<PlayerUI>().DeathScreen();
+           // Die();
         }
-    }
-
-    void DeathScreen()
-    {
-
     }
 
     public void Die()

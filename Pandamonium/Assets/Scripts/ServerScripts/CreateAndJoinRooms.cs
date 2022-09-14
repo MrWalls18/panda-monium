@@ -8,10 +8,11 @@ using Photon.Realtime;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
+    private static string usernamePrefKey = "Username";
+
     [SerializeField] private InputField createInput;
     [SerializeField] private InputField joinInput;
-    [SerializeField] private InputField username;
-    private static string usernamePrefKey = "Username";
+    [SerializeField] private InputField username;    
 
     [SerializeField] private GameObject[] menuScreens;
     [SerializeField] private GameObject playerListItemPrefab;
