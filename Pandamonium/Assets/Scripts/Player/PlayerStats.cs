@@ -18,7 +18,7 @@ public class PlayerStats : MonoBehaviour
     }
 
     [SerializeField]
-    private float _speed = 12f;
+    private float _speed;
     public float Speed
     {
         get {
@@ -30,7 +30,7 @@ public class PlayerStats : MonoBehaviour
     }
 
     [SerializeField]
-    private float _jumpHeight = 3f;
+    private float _jumpHeight;
     public float JumpHeight
     {
         get {
@@ -39,7 +39,7 @@ public class PlayerStats : MonoBehaviour
     }
 
     [SerializeField]
-    private bool _hasDoubleJump = true;
+    private bool _hasDoubleJump;
     public bool HasDoubleJump
     {
         get {
@@ -51,7 +51,7 @@ public class PlayerStats : MonoBehaviour
     }
 
     [SerializeField]
-    private bool _isPlayerGrounded = false;
+    private bool _isPlayerGrounded;
     public bool IsPlayerGrounded
     {
         get {

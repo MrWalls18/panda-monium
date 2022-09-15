@@ -7,7 +7,6 @@ public class Rock : MonoBehaviour
 {
     [SerializeField] private int damage;
     private PhotonView PV;
-    [HideInInspector] public string bulletOwner = "";
 
     private void Awake()
     {
@@ -16,21 +15,17 @@ public class Rock : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) 
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            if (bulletOwner == other.gameObject.GetComponent<PhotonView>().Owner.NickName)
-                return;
-            else
-            {
-                Debug.Log(bulletOwner + " : " + other.gameObject.GetComponent<PhotonView>().Owner.NickName);
-                //Damage Health
-                other.gameObject.GetComponent<IDamageable>()?.TakeDamage(damage);
-            }
-            
-        }        
-
         if(PV.IsMine)
         {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                if (other.gameObject.GetPhotonView().IsMine)
+                    return;
+                else
+                {
+                    other.gameObject.GetComponent<IDamageable>()?.TakeDamage(damage);
+                }
+            } 
             PhotonNetwork.Destroy(gameObject);
         }
     }

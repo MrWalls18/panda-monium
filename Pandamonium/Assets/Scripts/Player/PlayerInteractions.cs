@@ -34,13 +34,11 @@ public class PlayerInteractions : MonoBehaviour
         {
             //Spawn projectile and grab Rigidbody
             GameObject projectile = PhotonNetwork.Instantiate(objectToThrow.name, attackPoint.position, camera.rotation);
-            projectile.GetComponent<Rock>().bulletOwner = PV.Owner.NickName;
             Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
             //Calculate direction
             Vector3 forceDirection = camera.transform.forward;
             RaycastHit hit;
-
             if(Physics.Raycast(camera.position, camera.forward, out hit, Mathf.Infinity))
             {
                 forceDirection = (hit.point - attackPoint.position).normalized;
