@@ -7,7 +7,7 @@ public class PlayerInteractions : MonoBehaviour
 {
     private PlayerStats playerStats;
 
-    [SerializeField] private Transform camera;
+    [SerializeField] private Transform cameraPositionRef;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private GameObject objectToThrow;
 
@@ -26,26 +26,27 @@ public class PlayerInteractions : MonoBehaviour
         {
             Throw();
         }
-    }    
+    }
 
     void Throw()
     {
         if(Input.GetButtonDown("Fire1") && playerStats.ThrowablesLeft > 0)
         {
             //Spawn projectile and grab Rigidbody
-            GameObject projectile = PhotonNetwork.Instantiate(objectToThrow.name, attackPoint.position, camera.rotation);
+            GameObject projectile = PhotonNetwork.Instantiate(objectToThrow.name, attackPoint.position, cameraPositionRef.rotation);
             Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
             //Calculate direction
-            Vector3 forceDirection = camera.transform.forward;
+            Vector3 forceDirection = cameraPositionRef.forward;
             RaycastHit hit;
-            if(Physics.Raycast(camera.position, camera.forward, out hit, Mathf.Infinity))
+            if(Physics.Raycast(cameraPositionRef.position, cameraPositionRef.forward, out hit, Mathf.Infinity))
             {
+                forceDirection = (hit.point - attackPoint.position);
                 forceDirection = (hit.point - attackPoint.position).normalized;
             }
 
             //Calculate force of throw and apply to projectile
-            Vector3 force = forceDirection * playerStats.ForwardThrowForce + transform.up * playerStats.UpwardThrowForce * Time.deltaTime;
+            Vector3 force = forceDirection * playerStats.ForwardThrowForce + transform.up * playerStats.UpwardThrowForce; Debug.Log("Force: " + forceDirection);
             projectileRb.AddForce(force, ForceMode.Impulse);
 
             playerStats.ThrowablesLeft--;

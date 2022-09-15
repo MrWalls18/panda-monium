@@ -11,6 +11,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         SingletonPattern();
+
+        PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
     }
 
     public override void OnEnable()
@@ -27,8 +29,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     void OnSceneLoaded(Scene scene, LoadSceneMode loadeSceneMode)
     {
-        if(scene.buildIndex == 2)
-            PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
+            
+    }
+
+    public override void OnLeftRoom()
+    {
+        SceneManager.LoadScene("Lobby");
+        base.OnLeftRoom();
     }
 
     void SingletonPattern()

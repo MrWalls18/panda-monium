@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (playerStats.Health <= 0)
         {
             DisablePlayer();
-            GetComponent<PlayerUI>().DeathScreen();
+            GetComponent<PlayerUIManager>().DeathScreen();
         }
     }
 
@@ -117,13 +117,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         MeshRenderer mesh = GetComponentInChildren<MeshRenderer>();
         if (mesh != null)
             mesh.enabled = false;
-        LookAround look = GetComponentInChildren<LookAround>();
+ /*       LookAround look = GetComponentInChildren<LookAround>();
         if (look != null)
             look.enabled = false;
 
         GetComponent<CharacterController>().enabled = false;
         GetComponent<PlayerController>().enabled = false;
-        GetComponent<PlayerInteractions>().enabled = false;        
+        GetComponent<PlayerInteractions>().enabled = false;    */    
     }
 #endregion
 

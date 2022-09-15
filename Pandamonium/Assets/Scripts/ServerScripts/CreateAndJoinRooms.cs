@@ -30,7 +30,14 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         if (PlayerPrefs.HasKey(usernamePrefKey))
             username.text = PlayerPrefs.GetString(usernamePrefKey);
 
-        PhotonNetwork.ConnectUsingSettings();
+        if (PhotonNetwork.IsConnected)
+        {
+            ChangeScreens("Create/Join Room");
+        }
+        else
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
     }
 
     public override void OnConnectedToMaster()
@@ -59,7 +66,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         PhotonNetwork.CreateRoom(createInput.text, new RoomOptions() { MaxPlayers = maxPlayersPerRoom});
 
-        ChangeScreens("Loading Screen");
+        ChangeScreens("LoadingScreen");
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -124,13 +131,13 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
-        ChangeScreens("Loading Screen");
+        ChangeScreens("LoadingScreen");
     }
 
     public void LeaveLobby()
     {
         PhotonNetwork.Disconnect();
-        ChangeScreens("Loading Screen");
+        ChangeScreens("LoadingScreen");
     }
 
     public override void OnLeftRoom()
