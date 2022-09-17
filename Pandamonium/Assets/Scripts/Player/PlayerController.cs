@@ -90,17 +90,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 #endregion
 
 #region Damage/Death RPC
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, string shooter)
     {
-        view.RPC(nameof(RPC_TakeDamage), view.Owner, damage);
+        view.RPC(nameof(RPC_TakeDamage), view.Owner, damage, shooter);
     }
 
     [PunRPC]
-    void RPC_TakeDamage(int damage)
+    void RPC_TakeDamage(int damage, string shooter)
     {
         playerStats.Health -= damage;
         if (playerStats.Health <= 0)
         {
+            RoomManager.Instance.PlayerKilledPlayer(shooter, view.Owner.NickName); //Calls RoomManager script to update who killed who
             DisablePlayer();
             GetComponent<PlayerUIManager>().DeathScreen();
         }
@@ -116,14 +117,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         MeshRenderer mesh = GetComponentInChildren<MeshRenderer>();
         if (mesh != null)
-            mesh.enabled = false;
- /*       LookAround look = GetComponentInChildren<LookAround>();
-        if (look != null)
-            look.enabled = false;
-
-        GetComponent<CharacterController>().enabled = false;
-        GetComponent<PlayerController>().enabled = false;
-        GetComponent<PlayerInteractions>().enabled = false;    */    
+            mesh.enabled = false;   
     }
 #endregion
 

@@ -5,6 +5,8 @@ using Photon.Pun;
 
 public class Rock : MonoBehaviour
 {
+    [HideInInspector] public string bulletOwner;
+
     [SerializeField] private int damage;
     private PhotonView PV;
 
@@ -23,7 +25,7 @@ public class Rock : MonoBehaviour
                     return;
                 else
                 {
-                    other.gameObject.GetComponent<IDamageable>()?.TakeDamage(damage);
+                    other.gameObject.GetComponent<IDamageable>()?.TakeDamage(damage, bulletOwner);
                 }
             } 
             PhotonNetwork.Destroy(gameObject);

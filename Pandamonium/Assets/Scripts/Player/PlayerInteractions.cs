@@ -35,6 +35,7 @@ public class PlayerInteractions : MonoBehaviour
             //Spawn projectile and grab Rigidbody
             GameObject projectile = PhotonNetwork.Instantiate(objectToThrow.name, attackPoint.position, cameraPositionRef.rotation);
             Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
+            projectile.GetComponent<Rock>().bulletOwner = PV.Owner.NickName;
 
             //Calculate direction
             Vector3 forceDirection = cameraPositionRef.forward;
