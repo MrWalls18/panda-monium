@@ -47,7 +47,7 @@ public class PlayerInteractions : MonoBehaviour
             }
 
             //Calculate force of throw and apply to projectile
-            Vector3 force = forceDirection * playerStats.ForwardThrowForce + transform.up * playerStats.UpwardThrowForce; Debug.Log("Force: " + forceDirection);
+            Vector3 force = forceDirection * playerStats.ForwardThrowForce + transform.up * playerStats.UpwardThrowForce;
             projectileRb.AddForce(force, ForceMode.Impulse);
 
             playerStats.ThrowablesLeft--;
