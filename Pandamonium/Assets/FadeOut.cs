@@ -1,4 +1,4 @@
-/*
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +8,7 @@ using Photon.Pun;
 public class FadeOut : MonoBehaviour
 {
     private Color alphaColor;
-    private float timeBetweenFade = 2f;
+    private float timeBetweenFade = 1f;
     private PhotonView view;
 
     private void Awake()
@@ -39,4 +39,3 @@ public class FadeOut : MonoBehaviour
             Fade(timeBetweenFade);
     }
 }
-*/

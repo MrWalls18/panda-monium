@@ -10,10 +10,12 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public static RoomManager Instance;
     [SerializeField] private GameObject killFeedItemPrefab;
     [SerializeField] private Transform killFeedContent;
+    private PhotonView view;
 
     void Awake()
     {
         SingletonPattern();
+        view = GetComponent<PhotonView>();
 
         PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
     }
@@ -38,6 +40,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene("Lobby");
+        Destroy(this.gameObject);
         base.OnLeftRoom();
     }
 
@@ -54,8 +57,16 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public void PlayerKilledPlayer(string shooter, string victim)
     {
-        Debug.Log("Kill feed");
-        GameObject killFeed = Instantiate(killFeedItemPrefab, killFeedContent);
+        view.RPC(nameof(RPC_PlayerKilledPlayer), RpcTarget.All, shooter, victim);
+    }
+
+    [PunRPC]
+    void RPC_PlayerKilledPlayer(string shooter, string victim)
+    {
+        GameObject killFeed = PhotonNetwork.Instantiate(killFeedItemPrefab.name, killFeedContent.position, Quaternion.identity);
         killFeed.GetComponent<Text>().text = (shooter + " killed " + victim);
+        killFeed.transform.SetParent(killFeedContent);
+        killFeed.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+        killFeed.transform.SetAsFirstSibling();
     }
 }

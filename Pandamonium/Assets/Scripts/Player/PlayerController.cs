@@ -115,6 +115,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [PunRPC]
     void RPC_DisablePlayer()
     {
+        GetComponent<CharacterController>().enabled = false;
         MeshRenderer mesh = GetComponentInChildren<MeshRenderer>();
         if (mesh != null)
             mesh.enabled = false;   
