@@ -5,11 +5,13 @@ using UnityEngine.UI;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public class RoomManager : MonoBehaviourPunCallbacks
+public class GameManager : MonoBehaviourPunCallbacks
 {
-    public static RoomManager Instance;
+    public static GameManager Instance;
+
     [SerializeField] private GameObject killFeedItemPrefab;
     [SerializeField] private Transform killFeedContent;
+
     private PhotonView view;
 
     void Awake()
@@ -63,10 +65,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_PlayerKilledPlayer(string shooter, string victim)
     {
-        GameObject killFeed = PhotonNetwork.Instantiate(killFeedItemPrefab.name, killFeedContent.position, Quaternion.identity);
-        killFeed.GetComponent<Text>().text = (shooter + " killed " + victim);
-        killFeed.transform.SetParent(killFeedContent);
-        killFeed.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
-        killFeed.transform.SetAsFirstSibling();
+        GameObject killFeed = PhotonNetwork.Instantiate(killFeedItemPrefab.name, killFeedContent.position, Quaternion.identity); //Spawns text prefab
+        killFeed.GetComponent<Text>().text = (shooter + " killed " + victim); //Sets the text
+        killFeed.transform.SetParent(killFeedContent); //Becomes child of the Content area
+        killFeed.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f); //Resets scale
+        killFeed.transform.SetAsFirstSibling(); //Moves to top of list
     }
 }

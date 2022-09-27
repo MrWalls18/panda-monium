@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         playerStats.Health -= damage;
         if (playerStats.Health <= 0)
         {
-            RoomManager.Instance.PlayerKilledPlayer(shooter, view.Owner.NickName); //Calls RoomManager script to update who killed who
+            GameManager.Instance.PlayerKilledPlayer(shooter, view.Owner.NickName); //Calls RoomManager script to update who killed who
             DisablePlayer();
             GetComponent<PlayerUIManager>().DeathScreen();
         }

@@ -5,37 +5,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class FadeOut : MonoBehaviour
+public class FadeOut : MonoBehaviourPunCallbacks
 {
-    private Color alphaColor;
-    private float timeBetweenFade = 1f;
     private PhotonView view;
+
 
     private void Awake()
     {
-        alphaColor = GetComponent<Text>().color;
         view = GetComponent<PhotonView>();
-    }
 
-    void Start()
-    {
-        //Fade(timeBetweenFade);
-    }
-
-    void Fade(float timer)
-    {
-        if(timer > 0f)
+        if (view.IsMine)
         {
-            Fade(timer - Time.deltaTime);
+            StartCoroutine(DestroyAfterSeconds());
         }
-        alphaColor.a -= 0.1f;
-        if (alphaColor.a <= 0f)
-        {
-            if(view.IsMine)
-                PhotonNetwork.Destroy(this.gameObject);
-
-        }
-        else
-            Fade(timeBetweenFade);
     }
+
+    IEnumerator DestroyAfterSeconds()
+    {
+        yield return new WaitForSeconds(5f);
+
+        PhotonNetwork.Destroy(gameObject);
+    }
+
 }
