@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 public class Scoreboard : MonoBehaviourPunCallbacks
 {
@@ -46,6 +47,38 @@ public class Scoreboard : MonoBehaviourPunCallbacks
     private void Update()
     {
         ToggleScoreboard();
+        SortList();
+    }
+
+    List<Transform> players = new List<Transform>();
+    public void SortList()
+    {
+        if (players == null)
+            return;
+
+        players.Clear();
+
+        foreach (Transform child in transform)
+        {
+            players.Add(child);
+        }
+
+        int i, j;
+        int N = players.Count;
+        for (j = 1; j < N; j++)
+            for (i = j; i > 0 && players[i].gameObject.GetComponent<ScoreboardItem>().kills > players[i - 1].gameObject.GetComponent<ScoreboardItem>().kills; i--)
+            {
+                Transform temp;
+
+                temp = players[i];
+                players[i] = players[i - 1];
+                players[i - 1] = temp;
+            }
+
+        for(i = 0; i < players.Count; i++)
+        {
+            players[i].SetSiblingIndex(i);
+        }
 
     }
 

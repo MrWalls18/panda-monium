@@ -13,11 +13,13 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
     [SerializeField] private Text deathsText;
 
     Player player;
+    public int kills;
 
     public void Initialize(Player player)
     {
         usernameText.text = player.NickName;
         this.player = player;
+        killsText.text = "0";
         UpdateStats();
     }
 
@@ -26,6 +28,7 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
         if(player.CustomProperties.TryGetValue("kills", out object kills))
         {
             killsText.text = kills.ToString();
+            this.kills = (int)kills;
         }
     }
 
