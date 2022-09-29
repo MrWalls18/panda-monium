@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class Rock : MonoBehaviour
 {
-    [HideInInspector] public string bulletOwner;
+    [HideInInspector] public Player bulletOwner;
 
     [SerializeField] private int damage;
     private PhotonView PV;

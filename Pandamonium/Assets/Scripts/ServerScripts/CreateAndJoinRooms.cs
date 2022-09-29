@@ -8,8 +8,6 @@ using Photon.Realtime;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
-    private static string usernamePrefKey = "Username";
-
     [SerializeField] private InputField createInput;
     [SerializeField] private InputField joinInput;
     [SerializeField] private InputField username;    
@@ -27,9 +25,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 #region Connecting to Servers
     private void Start()
     {
-        if (PlayerPrefs.HasKey(usernamePrefKey))
-            username.text = PlayerPrefs.GetString(usernamePrefKey);
-
         if (PhotonNetwork.IsConnected)
         {
             ChangeScreens("Create/Join Room");
@@ -89,7 +84,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         //Sets username and saves it
         PhotonNetwork.NickName = username.text;
-        PlayerPrefs.SetString(usernamePrefKey, username.text);
 
         //Changes the displayed room name
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;

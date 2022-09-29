@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
@@ -90,18 +91,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 #endregion
 
 #region Damage/Death RPC
-    public void TakeDamage(int damage, string shooter)
+    public void TakeDamage(int damage, Player player)
     {
-        view.RPC(nameof(RPC_TakeDamage), view.Owner, damage, shooter);
+        view.RPC(nameof(RPC_TakeDamage), view.Owner, damage, player);
     }
 
     [PunRPC]
-    void RPC_TakeDamage(int damage, string shooter)
+    void RPC_TakeDamage(int damage, Player shooter)
     {
         playerStats.Health -= damage;
         if (playerStats.Health <= 0)
         {
-            GameManager.Instance.PlayerKilledPlayer(shooter, view.Owner.NickName); //Calls RoomManager script to update who killed who
+            GameManager.Instance.KillFeed(shooter, view.Owner.NickName); //Calls RoomManager script to update who killed who
+            PlayerManager.Find(shooter).GetKill();
             DisablePlayer();
             GetComponent<PlayerUIManager>().DeathScreen();
         }

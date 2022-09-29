@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using UnityEngine.UI;
+using Photon.Realtime;
 
 public class PlayerUIManager : MonoBehaviourPunCallbacks
 {
@@ -11,10 +13,25 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
     private bool isPaused = false;
     private PhotonView view;
 
+    [SerializeField] private Image doubleJump;
+    [SerializeField] private Image speedBoost;
+    [SerializeField] private Text bulletsText;
+
+    [SerializeField] private Canvas canvas;
+
     private void Awake()
     {
         view = GetComponent<PhotonView>();
         playerStats = GetComponent<PlayerStats>();
+
+        if(view.IsMine)
+        {
+            canvas.enabled = true;
+        }
+        else
+        {
+            canvas.enabled = false;
+        }    
     }
 
     private void Update()
@@ -22,8 +39,35 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
         if(view.IsMine)
         {
             PauseScreen();
+            DisplayPowerups();
         }
         
+    }
+
+    private void DisplayPowerups()
+    {
+        if (view.IsMine)
+        {
+            if (playerStats.HasDoubleJump)
+            {
+                doubleJump.color = new Color(0, 0, 0, 1);
+            }
+            else
+            {
+                doubleJump.color = new Color(0, 0, 0, 0.25f);
+            }
+
+            if (playerStats.HasSpeedBoost)
+            {
+                speedBoost.color = new Color(0, 0, 0, 1);
+            }
+            else
+            {
+                speedBoost.color = new Color(0, 0, 0, 0.25f);
+            }
+
+            bulletsText.text = playerStats.ThrowablesLeft.ToString();
+        }
     }
 
     public void DeathScreen()

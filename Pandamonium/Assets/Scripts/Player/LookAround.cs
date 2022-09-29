@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class LookAround : MonoBehaviour
 {
+    private static string mouseSensPrefKey = "Sensitivity"; 
+
     [SerializeField] private float mouseSensitivity;
+    [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private Transform playerBody;
     private float xRotation = 0f;
 
@@ -13,6 +17,12 @@ public class LookAround : MonoBehaviour
 
     void Start()
     {
+        if(PlayerPrefs.HasKey(mouseSensPrefKey))
+        {
+            mouseSensitivity = PlayerPrefs.GetFloat(mouseSensPrefKey);
+            sensitivitySlider.value = mouseSensitivity;
+        }
+
         Cursor.lockState = CursorLockMode.Locked;
         view = GetComponent<PhotonView>();
     }
@@ -21,8 +31,18 @@ public class LookAround : MonoBehaviour
     {
         if (view.IsMine)
         {
-            Look();  
+            Look();
+            MouseSensitivitySlider();
         }
+    }
+
+    void MouseSensitivitySlider()
+    {
+        sensitivitySlider.onValueChanged.AddListener((v) =>
+        {
+            mouseSensitivity = v;
+            PlayerPrefs.SetFloat(mouseSensPrefKey, v);
+        });
     }
 
     void Look()

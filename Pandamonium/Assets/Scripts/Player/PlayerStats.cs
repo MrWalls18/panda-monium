@@ -16,6 +16,19 @@ public class PlayerStats : MonoBehaviour
             _health = value;
         }
     }
+    /*
+    [SerializeField]
+    private int _score;
+    public int Score
+    {
+        get {
+            return _score;
+        }
+        set {
+            _score = value;
+        }
+    }
+    */
 
     [SerializeField]
     private float _speed;

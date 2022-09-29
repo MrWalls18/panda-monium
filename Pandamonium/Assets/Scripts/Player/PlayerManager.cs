@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using Photon.Realtime;
+using System.Linq;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerManager : MonoBehaviourPunCallbacks
 {
     private PhotonView view;
     private GameObject playerPrefab;
+
+    private int _kills;
 
     void Awake()
     {
@@ -33,6 +37,26 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             int index = Random.Range(0, spawnPoints.Length);
             playerPrefab = PhotonNetwork.Instantiate("Player", spawnPoints[index].transform.position, spawnPoints[index].transform.rotation, 0, new object[] {view.ViewID});
         }        
+    }
+
+    public void GetKill()
+    {
+        view.RPC(nameof(RPC_GetKill), view.Owner);
+    }
+
+    [PunRPC]
+    void RPC_GetKill()
+    {
+        _kills++;
+
+        Hashtable hash = new Hashtable();
+        hash.Add("kills", _kills);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+    }
+
+    public static PlayerManager Find(Player player)
+    {
+        return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.view.Owner == player);
     }
 
     public void Die()
