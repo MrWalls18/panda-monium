@@ -19,14 +19,24 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
 
     [SerializeField] private Canvas canvas;
 
+    private GameManager gm;
+
     private void Awake()
     {
         view = GetComponent<PhotonView>();
         playerStats = GetComponent<PlayerStats>();
+        gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         if(view.IsMine)
         {
             canvas.enabled = true;
+
+            //At start of game, all player input is disabled until countdown is done
+            if (gm.timeToStartGameText.enabled)
+            {
+                DisableControls();
+                StartCoroutine(StartGame());
+            }
         }
         else
         {
@@ -36,7 +46,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if(view.IsMine)
+        if(view.IsMine && !gm.timeToStartGameText.enabled)
         {
             PauseScreen();
             DisplayPowerups();
@@ -44,10 +54,18 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
         
     }
 
+    IEnumerator StartGame()
+    {
+        yield return new WaitForSeconds(5);
+
+        EnableControls();
+    }
+
     private void DisplayPowerups()
     {
         if (view.IsMine)
         {
+            //Shows UI for double jump
             if (playerStats.HasDoubleJump)
             {
                 doubleJump.color = new Color(0, 0, 0, 1);
@@ -57,6 +75,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
                 doubleJump.color = new Color(0, 0, 0, 0.25f);
             }
 
+            // Shows UI for speed boost
             if (playerStats.HasSpeedBoost)
             {
                 speedBoost.color = new Color(0, 0, 0, 1);
@@ -66,6 +85,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
                 speedBoost.color = new Color(0, 0, 0, 0.25f);
             }
 
+            //Shows UI for bullets
             bulletsText.text = playerStats.ThrowablesLeft.ToString();
         }
     }
@@ -103,7 +123,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
         }
     }
 
-    void DisableControls()
+    public void DisableControls()
     {
         GetComponent<PlayerController>().enabled = false;
         GetComponent<PlayerInteractions>().enabled = false;
@@ -112,7 +132,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
             look.enabled = false;
     }
 
-    void EnableControls()
+    public void EnableControls()
     {
         GetComponent<PlayerController>().enabled = true;
         GetComponent<PlayerInteractions>().enabled = true;

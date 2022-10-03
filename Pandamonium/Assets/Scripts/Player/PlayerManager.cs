@@ -12,6 +12,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private int _kills;
 
+    Player[] allPlayers;
+
     void Awake()
     {
         view = GetComponent<PhotonView>();
@@ -19,23 +21,31 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     
     void Start()
     {
-        if (view.IsMine)
+        StartGameSpawn();
+    }
+
+    //Prevents players from spawning at same place at start of game
+    void StartGameSpawn()
+    {
+        allPlayers = PhotonNetwork.PlayerList;
+
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
-            SpawnPlayer();
+            if (allPlayers[i] == PhotonNetwork.LocalPlayer && view.IsMine)
+            {
+                playerPrefab = PhotonNetwork.Instantiate("Player", GameManager.Instance.spawnPoints[i].transform.position, GameManager.Instance.spawnPoints[i].transform.rotation, 0, new object[] { view.ViewID });
+            }
         }
     }
 
     void SpawnPlayer()
     {
-        //Gets all spawn points in scene to randomly spawn player
-        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("Respawn");
-
-        if(spawnPoints.Length <= 0)
+        if(GameManager.Instance.spawnPoints.Length <= 0 || GameManager.Instance.spawnPoints == null)
             playerPrefab = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0, new object[] {view.ViewID});
         else
         {
-            int index = Random.Range(0, spawnPoints.Length);
-            playerPrefab = PhotonNetwork.Instantiate("Player", spawnPoints[index].transform.position, spawnPoints[index].transform.rotation, 0, new object[] {view.ViewID});
+            int index = Random.Range(0, GameManager.Instance.spawnPoints.Length);
+            playerPrefab = PhotonNetwork.Instantiate("Player", GameManager.Instance.spawnPoints[index].transform.position, GameManager.Instance.spawnPoints[index].transform.rotation, 0, new object[] {view.ViewID});
         }        
     }
 

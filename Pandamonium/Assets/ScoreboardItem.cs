@@ -13,14 +13,24 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
     [SerializeField] private Text deathsText;
 
     Player player;
-    public int kills;
+    PhotonView view;
+    [HideInInspector] public int kills;
+
+    private void Awake()
+    {
+        view = GetComponent<PhotonView>();
+    }
 
     public void Initialize(Player player)
     {
         usernameText.text = player.NickName;
         this.player = player;
-        killsText.text = "0";
         UpdateStats();
+        if (view.IsMine)
+        {
+            usernameText.color = Color.yellow;
+            killsText.color = Color.yellow;
+        }
     }
 
     void UpdateStats()

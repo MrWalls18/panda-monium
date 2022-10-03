@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4429096911537381406}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,6 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f20d6d5a722fc94ead2ef7c22c423bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToStartGameText: {fileID: 0}
+  timeToStartGame: 0
+  timerText: {fileID: 0}
+  timerInSeconds: 0
   killFeedItemPrefab: {fileID: 5204851982891309355, guid: 26a4ecbce1f4eac4aa21d91b35b303b8, type: 3}
   killFeedContent: {fileID: 0}
 --- !u!114 &4429096911537381406

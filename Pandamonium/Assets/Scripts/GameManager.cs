@@ -10,11 +10,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance;
     private float matchTime = 300f;
+    public Transform[] spawnPoints;
 
-    [Header("Timer Fields")]
+    [Header("Start Game Timer Fields")]
+    [SerializeField] public Text timeToStartGameText;
+    [SerializeField] public float timeToStartGame;
+
+    [Header("Match Timer Fields")]
     [SerializeField] private Text timerText;
     [SerializeField] private float timerInSeconds;
-    private bool isTimerRunning = true;
+    private bool isTimerRunning = false;
 
     [Header("Kill Feed Fields")]
     [SerializeField] private GameObject killFeedItemPrefab;
@@ -22,7 +27,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
     private PhotonView view;
-
     void Awake()
     {
         timerInSeconds = matchTime;
@@ -30,30 +34,32 @@ public class GameManager : MonoBehaviourPunCallbacks
         view = GetComponent<PhotonView>();
 
         PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
+        PhotonNetwork.CurrentRoom.IsOpen = false;
     }
-    /*
-    public override void OnEnable()
-    {
-        base.OnEnable();
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    public override void OnDisable()
-    {
-        base.OnDisable();
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode loadeSceneMode)
-    {
-            
-    }
-    */
 
     private void FixedUpdate()
     {
+        CountdownToStartGame();
         //Timer();
     }
+
+    void CountdownToStartGame()
+    {
+        if (timeToStartGameText.enabled)
+        {
+            if (timeToStartGame >= 0)
+            {
+                Mathf.FloorToInt(timeToStartGame);
+                timeToStartGameText.text = timeToStartGame.ToString("#");
+                timeToStartGame -= Time.deltaTime;
+            }
+            else
+            {
+                timeToStartGameText.enabled = false;
+            }
+        }
+    }
+
 
 #region Timer Functions
     private void Timer()
@@ -63,7 +69,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             timerInSeconds -= Time.deltaTime;
             if (timerInSeconds <= 0)
             {
-                DisplayTime(0);
+                DisplayTime(0f);
                 isTimerRunning = false;
                 //end game screen
                 //show victory/defeat
