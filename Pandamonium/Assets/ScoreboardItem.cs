@@ -8,12 +8,13 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class ScoreboardItem : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private Text usernameText;
-    [SerializeField] private Text killsText;
+    [SerializeField] public Text usernameText;
+    [SerializeField] public Text killsText;
     [SerializeField] private Text deathsText;
 
-    Player player;
-    PhotonView view;
+    private Player player;
+    private PhotonView view;
+
     [HideInInspector] public int kills;
 
     private void Awake()
@@ -26,11 +27,6 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
         usernameText.text = player.NickName;
         this.player = player;
         UpdateStats();
-        if (view.IsMine)
-        {
-            usernameText.color = Color.yellow;
-            killsText.color = Color.yellow;
-        }
     }
 
     void UpdateStats()

@@ -13,7 +13,7 @@ public class Scoreboard : MonoBehaviourPunCallbacks
 
     Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
 
-    private void Start()
+    private void Awake()
     {
         foreach(Player player in PhotonNetwork.PlayerList)
         {

@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     private float matchTime = 300f;
     public Transform[] spawnPoints;
 
+    [Header("Scoreboard")]
+    [SerializeField] private GameObject scoreboard;
+
     [Header("Start Game Timer Fields")]
     [SerializeField] public Text timeToStartGameText;
     [SerializeField] public float timeToStartGame;
@@ -27,6 +30,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
     private PhotonView view;
+    ScoreboardItem[] scoreboardItems;
     void Awake()
     {
         timerInSeconds = matchTime;
@@ -35,6 +39,20 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
         PhotonNetwork.CurrentRoom.IsOpen = false;
+    }
+
+    private void Start()
+    {
+        scoreboardItems = scoreboard.transform.GetComponentsInChildren<ScoreboardItem>();
+
+        foreach(ScoreboardItem item in scoreboardItems)
+        {
+            if(item.usernameText.text == PhotonNetwork.LocalPlayer.NickName)
+            {
+                item.usernameText.color = Color.yellow;
+                item.killsText.color = Color.yellow;
+            }
+        }
     }
 
     private void FixedUpdate()
