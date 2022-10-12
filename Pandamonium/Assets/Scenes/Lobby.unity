@@ -349,10 +349,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f20d6d5a722fc94ead2ef7c22c423bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  matchPoints: 0
+  spawnPoints: []
+  scoreboard: {fileID: 0}
+  timeToStartGameText: {fileID: 0}
+  timeToStartGame: 0
   timerText: {fileID: 0}
   timerInSeconds: 0
   killFeedItemPrefab: {fileID: 0}
   killFeedContent: {fileID: 0}
+  postGameScreen: {fileID: 0}
+  isGameOver: 0
 --- !u!1 &55168938
 GameObject:
   m_ObjectHideFlags: 0

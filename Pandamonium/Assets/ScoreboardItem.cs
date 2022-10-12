@@ -15,11 +15,17 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
     private Player player;
     private PhotonView view;
 
-    [HideInInspector] public int kills;
+    public int kills;
+
+    private bool triggered;
 
     private void Awake()
     {
+        triggered = false;
         view = GetComponent<PhotonView>();
+        Hashtable hash = new Hashtable();
+        hash.Add("kills", 0);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
     }
 
     public void Initialize(Player player)
@@ -35,6 +41,13 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
         {
             killsText.text = kills.ToString();
             this.kills = (int)kills;
+
+            if(this.kills >= GameManager.Instance.matchPoints && triggered)
+            {
+                GameManager.Instance.EndGame();
+            }
+
+            triggered = true;
         }
     }
 

@@ -16,6 +16,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     void Awake()
     {
+        _kills = 0;
         view = GetComponent<PhotonView>();
     }
     

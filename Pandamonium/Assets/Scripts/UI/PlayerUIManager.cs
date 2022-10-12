@@ -38,6 +38,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
                 StartCoroutine(StartGame());
             }
         }
+
         else
         {
             canvas.enabled = false;

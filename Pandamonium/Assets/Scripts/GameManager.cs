@@ -10,10 +10,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance;
     private float matchTime = 300f;
+    public int matchPoints;
+
+    [Header("Spawn Points")]
     public Transform[] spawnPoints;
 
     [Header("Scoreboard")]
     [SerializeField] private GameObject scoreboard;
+    private ScoreboardItem[] scoreboardItems;
 
     [Header("Start Game Timer Fields")]
     [SerializeField] public Text timeToStartGameText;
@@ -28,16 +32,24 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject killFeedItemPrefab;
     [SerializeField] private Transform killFeedContent;
 
+    [Header("Post Game Fields")]
+    [SerializeField] private GameObject postGameScreen;
+    [HideInInspector] public  bool isGameOver = false;
+
 
     private PhotonView view;
-    ScoreboardItem[] scoreboardItems;
+    
     void Awake()
     {
+        isGameOver = false;
+
         timerInSeconds = matchTime;
         SingletonPattern();
         view = GetComponent<PhotonView>();
+        scoreboard.GetComponent<CanvasGroup>().alpha = 0;
 
         PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
+
         PhotonNetwork.CurrentRoom.IsOpen = false;
     }
 
@@ -103,7 +115,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         float seconds = Mathf.FloorToInt(time % 60);
         timerText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
     }
-#endregion
+    #endregion
 
     public override void OnLeftRoom()
     {
@@ -119,16 +131,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             Destroy(gameObject);
             return;
         }
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
         Instance = this;
-    }    
+    }
 
+#region Kill Feed Functions
     public void KillFeed(Player shooter, string victim)
     {
         view.RPC(nameof(RPC_KillFeed), RpcTarget.All, shooter, victim);
-    }
-    
-    
+    }    
 
     [PunRPC]
     void RPC_KillFeed(Player shooter, string victim)
@@ -138,5 +149,25 @@ public class GameManager : MonoBehaviourPunCallbacks
         killFeed.transform.SetParent(killFeedContent); //Becomes child of the Content area
         killFeed.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f); //Resets scale
         killFeed.transform.SetAsFirstSibling(); //Moves to top of list
+    }
+#endregion
+
+    public void EndGame()
+    {
+        Debug.Log("End Game Reached");
+        isGameOver = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        //Destroy all player objects
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            player.SetActive(false);
+        }
+
+        //Show scoreboard
+        scoreboard.GetComponent<CanvasGroup>().alpha = 1;
+
+        //Show PostGame Screen
+        postGameScreen.SetActive(true);
     }
 }

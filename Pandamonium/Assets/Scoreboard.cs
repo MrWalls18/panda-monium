@@ -13,6 +13,7 @@ public class Scoreboard : MonoBehaviourPunCallbacks
 
     Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
 
+
     private void Awake()
     {
         foreach(Player player in PhotonNetwork.PlayerList)
@@ -46,7 +47,9 @@ public class Scoreboard : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        ToggleScoreboard();
+        if(GameManager.Instance.isGameOver == false)
+            ToggleScoreboard();
+
         SortList();
     }
 
