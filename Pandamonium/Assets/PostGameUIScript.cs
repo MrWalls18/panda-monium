@@ -11,7 +11,7 @@ public class PostGameUIScript : MonoBehaviour
 
     private void Update()
     {
-        if(PhotonNetwork.LocalPlayer.IsMasterClient)
+       /* if(PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             waitingText.SetActive(false);
             restartButton.SetActive(true);
@@ -21,12 +21,14 @@ public class PostGameUIScript : MonoBehaviour
             waitingText.SetActive(true);
             restartButton.SetActive(false);
         }
+        */
     }
 
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
     }
+
 
     public void RestartLevel()
     {

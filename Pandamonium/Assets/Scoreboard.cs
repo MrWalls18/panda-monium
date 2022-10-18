@@ -41,8 +41,11 @@ public class Scoreboard : MonoBehaviourPunCallbacks
 
     void RemoveScoreboardItem(Player player)
     {
-        Destroy(scoreboardItems[player].gameObject);
-        scoreboardItems.Remove(player);
+        if (GameManager.Instance.isGameOver == false)
+        {
+            Destroy(scoreboardItems[player].gameObject);
+            scoreboardItems.Remove(player);
+        }
     }
 
     private void Update()

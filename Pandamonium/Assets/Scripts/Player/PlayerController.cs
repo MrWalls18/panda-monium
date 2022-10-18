@@ -23,7 +23,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         playerStats = GetComponent<PlayerStats>();
         view = GetComponent<PhotonView>();
-        playerManager = PhotonView.Find((int)view.InstantiationData[0]).GetComponent<PlayerManager>(); //Finds player manager in scene
+
+        //Finds player manager in scene
+        playerManager = PhotonView.Find((int)view.InstantiationData[0]).GetComponent<PlayerManager>();
     }
 
     private void Start() 
@@ -102,9 +104,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         playerStats.Health -= damage;
         if (playerStats.Health <= 0)
         {
-            GameManager.Instance.KillFeed(shooter, view.Owner.NickName); //Calls RoomManager script to update who killed who
+            //creates KillFeed item
+            GameManager.Instance.KillFeed(shooter, view.Owner.NickName);
+
+            //Give the kill to the shooter
             PlayerManager.Find(shooter).GetKill();
+
             DisablePlayer();
+
             GetComponent<PlayerUIManager>().DeathScreen();
         }
     }

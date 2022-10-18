@@ -39,17 +39,25 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private PhotonView view;
     
-    void Awake()
+    private void Awake()
     {
-        isGameOver = false;
-
-        timerInSeconds = matchTime;
+        //Make Game Manager a Singleton
         SingletonPattern();
+
+        //Set game variables
+        isGameOver = false;
+        timerInSeconds = matchTime;
+        
+        //Find PhotonView component
         view = GetComponent<PhotonView>();
+
+        //Make scoreboard invisible
         scoreboard.GetComponent<CanvasGroup>().alpha = 0;
 
+        //Spawn Player manager for players
         PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
 
+        //Close room
         PhotonNetwork.CurrentRoom.IsOpen = false;
     }
 
@@ -57,6 +65,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         scoreboardItems = scoreboard.transform.GetComponentsInChildren<ScoreboardItem>();
 
+        //Finds local player Scoreboard item and turns the text yellow
+        //So players easily identify themselves on the scoreboard
         foreach(ScoreboardItem item in scoreboardItems)
         {
             if(item.usernameText.text == PhotonNetwork.LocalPlayer.NickName)
@@ -73,7 +83,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         //Timer();
     }
 
-    void CountdownToStartGame()
+    private void CountdownToStartGame()
     {
         if (timeToStartGameText.enabled)
         {
@@ -115,7 +125,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         float seconds = Mathf.FloorToInt(time % 60);
         timerText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
     }
-    #endregion
+#endregion
 
     public override void OnLeftRoom()
     {
@@ -144,18 +154,33 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_KillFeed(Player shooter, string victim)
     {
-        GameObject killFeed = PhotonNetwork.Instantiate(killFeedItemPrefab.name, killFeedContent.position, Quaternion.identity); //Spawns text prefab
-        killFeed.GetComponent<Text>().text = (shooter.NickName + " killed " + victim); //Sets the text
-        killFeed.transform.SetParent(killFeedContent); //Becomes child of the Content area
-        killFeed.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f); //Resets scale
-        killFeed.transform.SetAsFirstSibling(); //Moves to top of list
+        //Spawns text prefab
+        GameObject killFeed = PhotonNetwork.Instantiate(killFeedItemPrefab.name, killFeedContent.position, Quaternion.identity);
+
+        //Sets the text
+        killFeed.GetComponent<Text>().text = (shooter.NickName + " killed " + victim);
+
+        //Becomes child of the Content area
+        killFeed.transform.SetParent(killFeedContent);
+
+        //Resets scale
+        killFeed.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+
+        //Moves to top of list
+        killFeed.transform.SetAsFirstSibling();
     }
 #endregion
 
+    //Currently called by ScoreboardItem.cs Line 47
+    //Temporary fix but must be addressed. Not ideal location
+    //to call this function
     public void EndGame()
     {
         Debug.Log("End Game Reached");
+
         isGameOver = true;
+
+        //Unlocks the mouse curson to be visible and moveable
         Cursor.lockState = CursorLockMode.None;
 
         //Destroy all player objects

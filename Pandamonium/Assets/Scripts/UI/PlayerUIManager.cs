@@ -18,6 +18,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
     [SerializeField] private Text bulletsText;
 
     [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject playerHUD;
 
     private GameManager gm;
 
@@ -99,6 +100,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
             ChangeScreens("None");
             DisableControls();
             ChangeScreens("DeathScreen");
+            playerHUD.SetActive(false);
             Cursor.lockState = CursorLockMode.None;
         }
     }
