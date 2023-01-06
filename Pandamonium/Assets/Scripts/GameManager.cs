@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private float timerInSeconds;
     private bool isTimerRunning = false;
 
+    [Header("Object Pooling Fields")]
+    [SerializeField] private List<GameObject> bulletImpactFX;
+    //[SerializeField] private int amountToPool;
+
     [Header("Kill Feed Fields")]
     [SerializeField] private GameObject killFeedItemPrefab;
     [SerializeField] private Transform killFeedContent;
@@ -100,8 +104,27 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+#region BulletImpact Pooling
+    public GameObject SpawnBulletImpact()
+    {
+        GameObject temp = null;
 
-#region Timer Functions
+        for (int i = 0; i < bulletImpactFX.Count; i++)
+        {
+            if (!bulletImpactFX[i].activeSelf)
+            {
+                Debug.Log("Found Impact FX");
+                temp = bulletImpactFX[i];
+                temp.SetActive(true);
+                break;
+            }
+        }
+        return temp;
+    }
+
+#endregion
+
+    #region Timer Functions
     private void Timer()
     {
         if (isTimerRunning)

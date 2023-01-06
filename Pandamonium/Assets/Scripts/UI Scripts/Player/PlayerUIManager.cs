@@ -129,7 +129,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
     public void DisableControls()
     {
         GetComponent<PlayerController>().enabled = false;
-        GetComponent<PlayerInteractions>().enabled = false;
+        GetComponent<PlayerShooting>().enabled = false;
         LookAround look = GetComponentInChildren<LookAround>();
         if (look != null)
             look.enabled = false;
@@ -138,7 +138,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
     public void EnableControls()
     {
         GetComponent<PlayerController>().enabled = true;
-        GetComponent<PlayerInteractions>().enabled = true;
+        GetComponent<PlayerShooting>().enabled = true;
         LookAround look = GetComponentInChildren<LookAround>();
         if (look != null)
             look.enabled = true;

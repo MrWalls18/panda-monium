@@ -13,11 +13,11 @@ public class AmmoPickup : MonoBehaviour
         {
             other.gameObject.GetComponent<PlayerStats>().ThrowablesLeft += ammoAmount;
 
-            StartCoroutine(SpawnJumpPickup());
+            StartCoroutine(SpawnAmmoPickup());
         }
     }
 
-    IEnumerator SpawnJumpPickup()
+    IEnumerator SpawnAmmoPickup()
     {
         this.gameObject.GetComponent<MeshRenderer>().enabled = false;
         this.gameObject.GetComponent<Collider>().enabled = false;

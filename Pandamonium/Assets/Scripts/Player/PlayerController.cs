@@ -131,6 +131,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     }
 #endregion
 
+    //Gets called when player presses the respawn button
     public void Die()
     {
         playerManager.Die();
