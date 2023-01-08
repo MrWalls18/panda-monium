@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4280761, g: 0.46171093, b: 0.4905526, a: 1}
+  m_IndirectSpecularColor: {r: 262.3369, g: 325.0498, b: 430.21924, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4331,6 +4331,67 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Username
+--- !u!1001 &5246406022700716329
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1914157599602797113, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: sceneViewId
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094093480278620987, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_Name
+      value: BulletDecal
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.9646505
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0782
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916756135070124140, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f1beabd87ed4b39469ffb2abb0d9ff8d, type: 3}
 --- !u!1 &5255398133409447861
 GameObject:
   m_ObjectHideFlags: 0
