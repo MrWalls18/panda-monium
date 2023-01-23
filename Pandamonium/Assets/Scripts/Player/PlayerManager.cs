@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         {
             if (allPlayers[i] == PhotonNetwork.LocalPlayer && view.IsMine)
             {
-                playerPrefab = PhotonNetwork.Instantiate("Player", GameManager.Instance.spawnPoints[i].transform.position, GameManager.Instance.spawnPoints[i].transform.rotation, 0, new object[] { view.ViewID });
+                playerPrefab = PhotonNetwork.Instantiate("Player/Player", GameManager.Instance.spawnPoints[i].transform.position, GameManager.Instance.spawnPoints[i].transform.rotation, 0, new object[] { view.ViewID });
             }
         }
     }
@@ -42,11 +42,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     void SpawnPlayer()
     {
         if(GameManager.Instance.spawnPoints.Length <= 0 || GameManager.Instance.spawnPoints == null)
-            playerPrefab = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0, new object[] {view.ViewID});
+            playerPrefab = PhotonNetwork.Instantiate("Player/Player", Vector3.zero, Quaternion.identity, 0, new object[] {view.ViewID});
         else
         {
             int index = Random.Range(0, GameManager.Instance.spawnPoints.Length);
-            playerPrefab = PhotonNetwork.Instantiate("Player", GameManager.Instance.spawnPoints[index].transform.position, GameManager.Instance.spawnPoints[index].transform.rotation, 0, new object[] {view.ViewID});
+            playerPrefab = PhotonNetwork.Instantiate("Player/Player", GameManager.Instance.spawnPoints[index].transform.position, GameManager.Instance.spawnPoints[index].transform.rotation, 0, new object[] {view.ViewID});
         }        
     }
 

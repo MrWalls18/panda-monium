@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         scoreboard.GetComponent<CanvasGroup>().alpha = 0;
 
         //Spawn Player manager for players
-        PhotonNetwork.Instantiate("PlayerManager", Vector3.zero, Quaternion.identity);
+        PhotonNetwork.Instantiate("Player/PlayerManager", Vector3.zero, Quaternion.identity);
 
         //Close room
         PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -113,7 +113,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (!bulletImpactFX[i].activeSelf)
             {
-                Debug.Log("Found Impact FX");
                 temp = bulletImpactFX[i];
                 temp.SetActive(true);
                 break;
@@ -178,7 +177,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     void RPC_KillFeed(Player shooter, string victim)
     {
         //Spawns text prefab
-        GameObject killFeed = PhotonNetwork.Instantiate(killFeedItemPrefab.name, killFeedContent.position, Quaternion.identity);
+        GameObject killFeed = PhotonNetwork.Instantiate("UI/" + killFeedItemPrefab.name, killFeedContent.position, Quaternion.identity);
 
         //Sets the text
         killFeed.GetComponent<Text>().text = (shooter.NickName + " killed " + victim);

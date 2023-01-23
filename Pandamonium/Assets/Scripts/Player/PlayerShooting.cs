@@ -73,7 +73,6 @@ public class PlayerShooting : MonoBehaviour
                     //PhotonNetwork spawn GO BulletImpact Prefab and point of impact
                     bulletImpactClone = GameManager.Instance.SpawnBulletImpact();
                     bulletImpactClone.transform.position = hit.point;
-                    //bulletImpactClone.transform.localPosition -= new Vector3(0f, 0f, 0.01f);
                     bulletImpactClone.transform.rotation = Quaternion.LookRotation(-hit.normal, Vector3.up);
 
                 }
@@ -85,9 +84,9 @@ public class PlayerShooting : MonoBehaviour
             timePassed = 0f;
         }
 
-        else if(Input.GetButtonUp("Fire1"))
+        else
         {
-            timerForContShooting -= Time.deltaTime;
+            timerForContShooting -= Time.deltaTime * 2;
 
             if (timerForContShooting < 0)
                 timerForContShooting = 0;
