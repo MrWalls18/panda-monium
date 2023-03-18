@@ -88,7 +88,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
             }
 
             //Shows UI for bullets
-            bulletsText.text = playerStats.ThrowablesLeft.ToString();
+            bulletsText.text = playerStats.BulletsLeft.ToString();
         }
     }
 

@@ -41,7 +41,7 @@ public class PlayerShooting : MonoBehaviour
 
     void Shoot()
     {
-        if(Input.GetButton("Fire1") && playerStats.ThrowablesLeft > 0)
+        if(Input.GetButton("Fire1") && playerStats.BulletsLeft > 0)
         {
             if (timePassed < timeBetweenShots)
             {
@@ -80,7 +80,7 @@ public class PlayerShooting : MonoBehaviour
 
 
             timerForContShooting += Time.deltaTime;
-            playerStats.ThrowablesLeft--;
+            playerStats.BulletsLeft--;
             timePassed = 0f;
         }
 

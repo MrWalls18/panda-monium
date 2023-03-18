@@ -62,38 +62,20 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private float _forwardThrowForce;
-    public float ForwardThrowForce
-    {
-        get {
-            return _forwardThrowForce;
-        }
-    }
+    [SerializeField] private int _maxBullets;
 
     [SerializeField]
-    private float _upwardThrowForce;
-    public float UpwardThrowForce
+    private int _bulletsLeft;
+    public int BulletsLeft
     {
         get {
-            return _upwardThrowForce;
-        }
-    }
-
-    [SerializeField] private int _maxThrowables;
-
-    [SerializeField]
-    private int _throwablesLeft;
-    public int ThrowablesLeft
-    {
-        get {
-            return _throwablesLeft;
+            return _bulletsLeft;
         }
         set {
-            _throwablesLeft = value;
-            if (_throwablesLeft > _maxThrowables)
+            _bulletsLeft = value;
+            if (_bulletsLeft > _maxBullets)
             {
-                _throwablesLeft = _maxThrowables;
+                _bulletsLeft = _maxBullets;
             }
         }
     }
